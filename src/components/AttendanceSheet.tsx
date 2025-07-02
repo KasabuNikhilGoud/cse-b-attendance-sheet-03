@@ -238,7 +238,7 @@ const AttendanceSheet = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className="bg-white/90 backdrop-blur-sm border border-gray-200 shadow-lg">
+        <Card className="bg-card/95 backdrop-blur-sm border-2 border-border shadow-card transition-smooth hover:shadow-elegant">
           <AttendanceHeader />
           <CardContent>
             <div className="space-y-6">

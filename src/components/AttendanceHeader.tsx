@@ -5,13 +5,16 @@ import { CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 const AttendanceHeader: React.FC = () => {
   return (
-    <CardHeader className="pb-4">
-      <CardTitle className="flex items-center gap-2 text-2xl font-bold bg-gradient-to-r from-blue-500 to-indigo-500 bg-clip-text text-transparent">
-        <Calendar className="h-6 w-6 text-blue-500" />
-        III-I CSE-B CLASS ATTENDANCE NNRG COLLEGE 2023-2027
+    <CardHeader className="pb-6 text-center">
+      <CardTitle className="flex items-center justify-center gap-3 text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-3">
+        <Calendar className="h-7 w-7 text-primary" />
+        III-I CSE-B CLASS ATTENDANCE
       </CardTitle>
-      <CardDescription className="text-gray-600">
-        Manage attendance, view analytics, and track historical data with modern tools.
+      <div className="text-sm font-medium text-muted-foreground mb-2">
+        NNRG COLLEGE • 2023-2027
+      </div>
+      <CardDescription className="text-muted-foreground max-w-2xl mx-auto">
+        Track attendance efficiently with smart analytics, instant notifications, and comprehensive reporting tools designed for students.
       </CardDescription>
     </CardHeader>
   );
