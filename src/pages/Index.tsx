@@ -1,47 +1,62 @@
 
 import AttendanceSheet from "@/components/AttendanceSheet";
+import FloatingDots from "@/components/FloatingDots";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Animated Background Elements */}
+    <div className="min-h-screen bg-gradient-mesh relative overflow-hidden">
+      {/* Floating Dots Animation */}
+      <FloatingDots />
+      
+      {/* Premium Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-red-500/20 to-black/20 rounded-full blur-3xl"
+          className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-primary/15 to-secondary/10 rounded-full blur-3xl"
           animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        />
-        <motion.div
-          className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-black/20 to-red-600/20 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [0, -90, 0],
+            scale: [1, 1.3, 1],
+            rotate: [0, 180, 0],
+            x: [0, 50, 0],
+            y: [0, -30, 0],
           }}
           transition={{
             duration: 25,
             repeat: Infinity,
-            ease: "linear"
+            ease: "easeInOut"
           }}
         />
         <motion.div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-br from-red-400/10 to-black/10 rounded-full blur-2xl"
+          className="absolute -bottom-40 -left-40 w-[120vw] h-[120vw] max-w-[600px] max-h-[600px] bg-gradient-to-br from-secondary/10 to-accent/15 rounded-full blur-3xl"
           animate={{
-            scale: [1, 1.3, 1],
+            scale: [1.2, 1, 1.2],
+            rotate: [0, -120, 0],
+            x: [0, -40, 0],
+            y: [0, 40, 0],
           }}
           transition={{
-            duration: 15,
+            duration: 30,
             repeat: Infinity,
             ease: "easeInOut"
           }}
         />
+        <motion.div
+          className="absolute top-1/4 right-1/4 w-80 h-80 bg-gradient-to-br from-accent/8 to-primary/12 rounded-full blur-2xl"
+          animate={{
+            scale: [1, 1.4, 1],
+            rotate: [0, 90, 0],
+            x: [0, 30, 0],
+            y: [0, -20, 0],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        {/* Additional mesh overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/95 to-background/90" />
       </div>
 
       <div className="container mx-auto px-4 py-8 relative z-10">
@@ -76,56 +91,60 @@ const Index = () => {
             Modern, student-friendly attendance tracking with powerful analytics, instant notifications, and seamless mobile experience
           </motion.p>
           
-          {/* CTA Buttons */}
+          {/* Premium CTA Buttons */}
           <motion.div 
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-10"
+            className="flex flex-col sm:flex-row gap-6 justify-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            <motion.button
-              className="btn-primary-gradient px-8 py-4 text-lg font-semibold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              Start Taking Attendance
-            </motion.button>
-            <motion.button
-              className="btn-secondary-gradient px-8 py-4 text-lg font-semibold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              <Button variant="premium" size="lg" className="text-lg font-bold shadow-premium hover:shadow-glow px-10 py-6">
+                🚀 Start Taking Attendance
+              </Button>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              View Analytics
-            </motion.button>
+              <Button variant="glass" size="lg" className="text-lg font-bold px-10 py-6">
+                📊 View Analytics Dashboard
+              </Button>
+            </motion.div>
           </motion.div>
           
-          {/* Feature highlights */}
+          {/* Premium Feature highlights */}
           <motion.div 
-            className="flex flex-wrap justify-center gap-3 mt-6"
+            className="flex flex-wrap justify-center gap-4 mt-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
           >
             {[
-              { icon: "📊", text: "Smart Analytics" },
-              { icon: "📧", text: "Auto Notifications" }, 
-              { icon: "📱", text: "Mobile First" },
-              { icon: "📈", text: "Export Reports" },
-              { icon: "☁️", text: "Cloud Sync" }
+              { icon: "🎯", text: "AI-Powered Analytics", color: "from-primary/20 to-accent/20" },
+              { icon: "⚡", text: "Instant Notifications", color: "from-accent/20 to-primary/20" }, 
+              { icon: "📱", text: "Mobile-First Design", color: "from-secondary/20 to-primary/20" },
+              { icon: "📊", text: "Advanced Reports", color: "from-primary/20 to-secondary/20" },
+              { icon: "☁️", text: "Real-time Sync", color: "from-accent/20 to-secondary/20" },
+              { icon: "🔒", text: "Secure & Private", color: "from-secondary/20 to-accent/20" }
             ].map((feature, index) => (
               <motion.div
                 key={feature.text}
-                className="bg-card/80 backdrop-blur-sm px-5 py-3 rounded-xl text-sm font-medium text-foreground shadow-card border border-border/50"
+                className={`bg-gradient-glass backdrop-blur-xl px-6 py-4 rounded-2xl text-sm font-semibold text-foreground shadow-glass border border-white/10 hover-lift`}
                 whileHover={{ 
-                  scale: 1.05, 
-                  backgroundColor: "hsl(var(--primary) / 0.1)",
+                  scale: 1.05,
+                  boxShadow: "var(--shadow-premium)",
                   borderColor: "hsl(var(--primary) / 0.3)"
                 }}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.9 + index * 0.1 }}
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.9 + index * 0.1, type: "spring", bounce: 0.4 }}
               >
-                <span className="text-lg mr-2">{feature.icon}</span>
+                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${feature.color} opacity-50 blur-xl -z-10`} />
+                <span className="text-xl mr-3">{feature.icon}</span>
                 {feature.text}
               </motion.div>
             ))}
@@ -133,10 +152,13 @@ const Index = () => {
         </motion.div>
         
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 1, delay: 0.6, type: "spring", bounce: 0.3 }}
+          className="relative"
         >
+          {/* Glow effect behind the main card */}
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-secondary/10 rounded-3xl blur-3xl scale-105" />
           <AttendanceSheet />
         </motion.div>
       </div>
