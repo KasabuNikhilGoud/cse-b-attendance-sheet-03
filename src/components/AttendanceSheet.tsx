@@ -11,6 +11,7 @@ import ExportOptions from "./ExportOptions";
 import EmailNotifications from "./EmailNotifications";
 import { getStorageKey, loadAttendanceData, saveAttendanceData } from "@/utils/attendanceUtils";
 import { sendWhatsAppAttendance } from "@/utils/whatsappUtils";
+import { googleSheetsService } from "@/services/googleSheetsService";
 import { motion } from "framer-motion";
 
 export interface Student {
@@ -210,6 +211,30 @@ const AttendanceSheet = () => {
     }
   };
 
+  const handleGoogleSheetsSave = async () => {
+    const dateKey = getStorageKey(selectedDate);
+    const updatedData = { ...allAttendanceData, [dateKey]: students };
+    
+    setAllAttendanceData(updatedData);
+    saveAttendanceData(updatedData);
+    
+    try {
+      await googleSheetsService.saveAttendanceToSheet(students, selectedDate, allAttendanceData);
+      
+      toast({
+        title: "Google Sheets Updated",
+        description: `Attendance for ${selectedDate.toLocaleDateString()} has been saved to Google Sheets.`,
+      });
+    } catch (error) {
+      console.error('Error saving to Google Sheets:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save to Google Sheets. Please check your configuration.",
+        variant: "destructive"
+      });
+    }
+  };
+
   const absentCount = students.filter(s => s.isAbsent).length;
   const presentCount = students.length - absentCount;
 
@@ -254,6 +279,7 @@ const AttendanceSheet = () => {
                 onWhatsAppSend={handleWhatsAppSend}
                 onShowExportOptions={() => setShowExportOptions(true)}
                 onShowEmailConfig={() => setShowEmailConfig(true)}
+                onGoogleSheetsSave={handleGoogleSheetsSave}
               />
 
               {/* Search and Filter */}

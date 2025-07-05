@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { format } from 'date-fns';
-import { Calendar, UserCheck, UserX, MessageCircle, Download, Mail } from 'lucide-react';
+import { Calendar, UserCheck, UserX, MessageCircle, Download, Mail, Sheet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -16,6 +16,7 @@ interface AttendanceControlsProps {
   onWhatsAppSend: () => void;
   onShowExportOptions: () => void;
   onShowEmailConfig: () => void;
+  onGoogleSheetsSave: () => void;
 }
 
 const AttendanceControls: React.FC<AttendanceControlsProps> = ({
@@ -25,7 +26,8 @@ const AttendanceControls: React.FC<AttendanceControlsProps> = ({
   absentCount,
   onWhatsAppSend,
   onShowExportOptions,
-  onShowEmailConfig
+  onShowEmailConfig,
+  onGoogleSheetsSave
 }) => {
   return (
     <div className="space-y-6">
@@ -90,6 +92,15 @@ const AttendanceControls: React.FC<AttendanceControlsProps> = ({
           >
             <Download className="mr-2 h-4 w-4" />
             Share Image
+          </Button>
+
+          <Button 
+            variant="outline" 
+            onClick={onGoogleSheetsSave}
+            className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+          >
+            <Sheet className="mr-2 h-4 w-4" />
+            Save to Sheets
           </Button>
 
           <Button 

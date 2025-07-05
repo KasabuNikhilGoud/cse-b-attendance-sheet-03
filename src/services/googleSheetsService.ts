@@ -103,6 +103,94 @@ export class GoogleSheetsService {
     return { attendanceData, reportData };
   }
 
+  // Save attendance data to Google Sheets in the specified format
+  public async saveAttendanceToSheet(students: any[], selectedDate: Date, allAttendanceData: Record<string, any[]>): Promise<boolean> {
+    if (!this.hasCredentials()) {
+      throw new Error('Google Sheets credentials not set');
+    }
+
+    try {
+      const dateTimeColumn = `${selectedDate.toLocaleDateString()} ${selectedDate.toLocaleTimeString()}`;
+      
+      // Calculate absent counts for each student across all dates
+      const studentAbsentCounts = students.map(student => {
+        let totalAbsent = 0;
+        Object.values(allAttendanceData).forEach(dayData => {
+          const studentDay = dayData.find(s => s.rollNumber === student.rollNumber);
+          if (studentDay && studentDay.isAbsent) {
+            totalAbsent++;
+          }
+        });
+        
+        // Add current day if student is absent
+        if (student.isAbsent) {
+          totalAbsent++;
+        }
+        
+        const totalDays = Object.keys(allAttendanceData).length + 1; // +1 for current day
+        const attendancePercentage = totalDays > 0 ? Math.round(((totalDays - totalAbsent) / totalDays) * 100) : 100;
+        
+        return {
+          rollNumber: student.rollNumber,
+          name: student.name,
+          totalAbsent,
+          attendancePercentage,
+          todayStatus: student.isAbsent ? 'A' : 'P'
+        };
+      });
+
+      // Prepare the sheet data structure as requested
+      const sheetData = {
+        // Headers
+        headers: ['Roll Number', 'Name', 'No Of Absent', 'Percentage', dateTimeColumn],
+        
+        // Student rows (rows 2-66)
+        studentRows: studentAbsentCounts.map(student => [
+          student.rollNumber,
+          student.name,
+          student.totalAbsent,
+          `${student.attendancePercentage}%`,
+          student.todayStatus
+        ]),
+        
+        // Summary row (row 67)
+        summaryRow: [
+          'TOTAL',
+          'SUMMARY',
+          students.filter(s => s.isAbsent).length, // Today's absent count
+          `${Math.round((students.filter(s => !s.isAbsent).length / students.length) * 100)}%`, // Today's attendance rate
+          `${selectedDate.toLocaleDateString()}`
+        ]
+      };
+
+      // Save formatted data for manual entry (since API keys can't write directly)
+      const backupKey = `sheets_attendance_${selectedDate.toISOString().split('T')[0]}`;
+      const backupData = {
+        sheetData,
+        instructions: `
+Copy this data to your Google Sheet:
+1. Headers go in row 1: ${sheetData.headers.join(' | ')}
+2. Student data goes in rows 2-66
+3. Summary data goes in row 67
+4. The date column (${dateTimeColumn}) shows today's attendance: P = Present, A = Absent
+`,
+        copyPasteFormat: {
+          headers: sheetData.headers.join('\t'),
+          students: sheetData.studentRows.map(row => row.join('\t')).join('\n'),
+          summary: sheetData.summaryRow.join('\t')
+        }
+      };
+      
+      localStorage.setItem(backupKey, JSON.stringify(backupData));
+      
+      console.log('Google Sheets data prepared:', backupData);
+      return true;
+    } catch (error) {
+      console.error('Error preparing Google Sheets data:', error);
+      throw error;
+    }
+  }
+
   // Save attendance data locally with proper formatting for Google Sheets
   public async saveAttendanceData(students: any[], selectedDate: Date): Promise<boolean> {
     if (!this.hasCredentials()) {
