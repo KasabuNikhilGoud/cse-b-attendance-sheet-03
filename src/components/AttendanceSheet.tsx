@@ -9,6 +9,7 @@ import AttendanceStats from "./AttendanceStats";
 import StudentGrid from "./StudentGrid";
 import ExportOptions from "./ExportOptions";
 import EmailNotifications from "./EmailNotifications";
+import GoogleSheetsConfig from "./GoogleSheetsConfig";
 import { getStorageKey, loadAttendanceData, saveAttendanceData } from "@/utils/attendanceUtils";
 import { sendWhatsAppAttendance } from "@/utils/whatsappUtils";
 import { googleSheetsService } from "@/services/googleSheetsService";
@@ -30,6 +31,7 @@ const AttendanceSheet = () => {
   const [filterType, setFilterType] = useState<"all" | "present" | "absent">("all");
   const [showExportOptions, setShowExportOptions] = useState(false);
   const [showEmailConfig, setShowEmailConfig] = useState(false);
+  const [showGoogleSheetsConfig, setShowGoogleSheetsConfig] = useState(false);
 
   // Student names mapping with emails
   const studentNames: Record<string, { name: string; email: string }> = {
@@ -219,17 +221,28 @@ const AttendanceSheet = () => {
     saveAttendanceData(updatedData);
     
     try {
-      await googleSheetsService.saveAttendanceToSheet(students, selectedDate, allAttendanceData);
+      // Check if Google Sheets is configured
+      if (!googleSheetsService.hasCredentials()) {
+        toast({
+          title: "Configuration Required",
+          description: "Please configure Google Sheets credentials first.",
+          variant: "destructive"
+        });
+        setShowGoogleSheetsConfig(true);
+        return;
+      }
+      
+      await googleSheetsService.saveAttendanceToSheet(students, selectedDate, updatedData);
       
       toast({
-        title: "Google Sheets Updated",
-        description: `Attendance for ${selectedDate.toLocaleDateString()} has been saved to Google Sheets.`,
+        title: "Data Prepared for Google Sheets",
+        description: "Check console for formatted data to copy-paste into your sheet.",
       });
     } catch (error) {
       console.error('Error saving to Google Sheets:', error);
       toast({
         title: "Error",
-        description: "Failed to save to Google Sheets. Please check your configuration.",
+        description: `Failed to prepare Google Sheets data: ${error.message}`,
         variant: "destructive"
       });
     }
@@ -257,6 +270,16 @@ const AttendanceSheet = () => {
             <DialogTitle>Email Notification Settings</DialogTitle>
           </DialogHeader>
           <EmailNotifications students={students} selectedDate={selectedDate} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Google Sheets Configuration Dialog */}
+      <Dialog open={showGoogleSheetsConfig} onOpenChange={setShowGoogleSheetsConfig}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>Google Sheets Configuration</DialogTitle>
+          </DialogHeader>
+          <GoogleSheetsConfig onConfigured={() => setShowGoogleSheetsConfig(false)} />
         </DialogContent>
       </Dialog>
 
