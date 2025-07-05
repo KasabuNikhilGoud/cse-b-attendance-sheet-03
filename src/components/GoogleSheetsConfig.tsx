@@ -12,8 +12,8 @@ interface GoogleSheetsConfigProps {
 }
 
 const GoogleSheetsConfig: React.FC<GoogleSheetsConfigProps> = ({ onConfigured }) => {
-  const [apiKey, setApiKey] = useState('AIzaSyBBxGH47shdGgxEO6Xv3wpvU-BehTp2oU0');
-  const [spreadsheetId, setSpreadsheetId] = useState('1hMAdzuK-BJqSL6uewjrk_fPZ6sygCZqm5slT7Dw4a2o');
+  const [apiKey, setApiKey] = useState('AIzaSyBqDwN5TdxaOXopbOul-ZpzcaxNk7p_sEU');
+  const [spreadsheetId, setSpreadsheetId] = useState('1Kqw4djUKnM7pe0zwmjArT9TpAevge9ucds_qJCcSfyo');
   const [isConfigured, setIsConfigured] = useState(false);
   const [isChecking, setIsChecking] = useState(false);
   const [backupData, setBackupData] = useState<any[]>([]);
@@ -23,8 +23,8 @@ const GoogleSheetsConfig: React.FC<GoogleSheetsConfigProps> = ({ onConfigured })
     // Only override if no credentials are saved and we have default values
     if (!credentials.apiKey && !credentials.spreadsheetId) {
       // Use the pre-filled values
-      setApiKey('AIzaSyBBxGH47shdGgxEO6Xv3wpvU-BehTp2oU0');
-      setSpreadsheetId('1hMAdzuK-BJqSL6uewjrk_fPZ6sygCZqm5slT7Dw4a2o');
+      setApiKey('AIzaSyBqDwN5TdxaOXopbOul-ZpzcaxNk7p_sEU');
+      setSpreadsheetId('1Kqw4djUKnM7pe0zwmjArT9TpAevge9ucds_qJCcSfyo');
     } else {
       setApiKey(credentials.apiKey);
       setSpreadsheetId(credentials.spreadsheetId);
@@ -164,8 +164,8 @@ const GoogleSheetsConfig: React.FC<GoogleSheetsConfigProps> = ({ onConfigured })
                   <p className="text-sm font-medium text-yellow-800">Manual Setup Required:</p>
                   <ol className="text-sm text-yellow-700 space-y-1 list-decimal list-inside ml-2">
                     <li>Open your spreadsheet using the "Open Sheet" button above</li>
-                    <li>Create a sheet named "Attendance" with columns: Date, Roll Number, Student Name, Status, Timestamp</li>
-                    <li>Create a sheet named "Reports" with columns: Date, Total Students, Present, Absent, Attendance Rate (%), Timestamp</li>
+                    <li>Create Sheet 1 named "Attendance" with columns: Roll Number | Name | No Of Absent | % Attendance | Date columns (P/A)</li>
+                    <li>Create Sheet 2 named "Reports" with columns: Date | Total Students | Present | Absent | Attendance Rate % | Timestamp</li>
                     <li>When you send attendance, formatted data will be prepared for copy-paste</li>
                   </ol>
                   <p className="text-xs text-yellow-600 mt-2">

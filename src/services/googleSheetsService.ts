@@ -140,9 +140,9 @@ export class GoogleSheetsService {
       });
 
       // Prepare the sheet data structure as requested
-      const sheetData = {
-        // Headers
-        headers: ['Roll Number', 'Name', 'No Of Absent', 'Percentage', dateTimeColumn],
+      const attendanceSheetData = {
+        // Headers for Attendance sheet
+        headers: ['Roll Number', 'Name', 'No Of Absent', '% Attendance', dateTimeColumn],
         
         // Student rows (rows 2-66)
         studentRows: studentAbsentCounts.map(student => [
@@ -163,21 +163,46 @@ export class GoogleSheetsService {
         ]
       };
 
-      // Save formatted data for manual entry (since API keys can't write directly)
+      // Prepare Reports sheet data
+      const reportsSheetData = {
+        // Headers for Reports sheet
+        headers: ['Date', 'Total Students', 'Present', 'Absent', 'Attendance Rate %', 'Timestamp'],
+        
+        // Report row
+        reportRow: [
+          selectedDate.toLocaleDateString(),
+          students.length,
+          students.filter(s => !s.isAbsent).length,
+          students.filter(s => s.isAbsent).length,
+          `${Math.round((students.filter(s => !s.isAbsent).length / students.length) * 100)}%`,
+          new Date().toISOString()
+        ]
+      };
+
+      // Save formatted data for manual entry
       const backupKey = `sheets_attendance_${selectedDate.toISOString().split('T')[0]}`;
       const backupData = {
-        sheetData,
+        attendanceSheet: attendanceSheetData,
+        reportsSheet: reportsSheetData,
         instructions: `
-Copy this data to your Google Sheet:
-1. Headers go in row 1: ${sheetData.headers.join(' | ')}
+Copy this data to your Google Sheets:
+
+🟢 Sheet 1: "Attendance"
+1. Headers go in row 1: ${attendanceSheetData.headers.join(' | ')}
 2. Student data goes in rows 2-66
 3. Summary data goes in row 67
 4. The date column (${dateTimeColumn}) shows today's attendance: P = Present, A = Absent
-`,
+
+🟢 Sheet 2: "Reports"  
+1. Headers: ${reportsSheetData.headers.join(' | ')}
+2. Add new report row: ${reportsSheetData.reportRow.join(' | ')}
+        `,
         copyPasteFormat: {
-          headers: sheetData.headers.join('\t'),
-          students: sheetData.studentRows.map(row => row.join('\t')).join('\n'),
-          summary: sheetData.summaryRow.join('\t')
+          attendanceHeaders: attendanceSheetData.headers.join('\t'),
+          attendanceStudents: attendanceSheetData.studentRows.map(row => row.join('\t')).join('\n'),
+          attendanceSummary: attendanceSheetData.summaryRow.join('\t'),
+          reportsHeaders: reportsSheetData.headers.join('\t'),
+          reportsRow: reportsSheetData.reportRow.join('\t')
         }
       };
       
@@ -272,11 +297,13 @@ Google Sheets Integration Setup:
 3. Provide easy copy-paste format for your sheets
 
 Required Setup:
-1. Create two sheets in your spreadsheet:
-   - "Attendance" with columns: Date | Roll Number | Student Name | Status | Timestamp
-   - "Reports" with columns: Date | Total Students | Present | Absent | Attendance Rate (%) | Timestamp
+🟢 Sheet 1: "Attendance"
+- A: Roll Number | B: Name | C: No Of Absent | D: % Attendance | E onward: Date columns (P/A)
 
-2. After sending attendance, check the browser console or backup data for formatted rows to copy-paste into your sheets.
+🟢 Sheet 2: "Reports"  
+- A: Date | B: Total Students | C: Present | D: Absent | E: Attendance Rate % | F: Timestamp
+
+After saving attendance, check the console for formatted data to copy-paste into your sheets.
 
 Current spreadsheet: ${this.getSpreadsheetUrl()}
     `;
