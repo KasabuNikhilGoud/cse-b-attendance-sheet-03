@@ -37,90 +37,103 @@ const ExportOptions: React.FC<ExportOptionsProps> = ({
       const absentStudents = students.filter(s => s.isAbsent);
       
       tempDiv.innerHTML = `
-        <!-- University Header with Gradient -->
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 30px; margin: -40px -40px 40px -40px; color: white; text-align: center; position: relative; overflow: hidden;">
-          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>'); opacity: 0.3;"></div>
+        <!-- Orange Lightning Background -->
+        <div style="background: linear-gradient(135deg, #ff7e00 0%, #ff9500 25%, #ffad00 50%, #ff8c00 75%, #ff7e00 100%); padding: 40px 30px; margin: -40px -40px 40px -40px; color: white; text-align: center; position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.2) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(255,255,255,0.1) 0%, transparent 50%); opacity: 0.8;"></div>
+          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>'); opacity: 0.4;"></div>
           <div style="position: relative; z-index: 1;">
-            <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.2);">
-              <h1 style="margin: 0; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.3); letter-spacing: 1px;">🎓 NNRG COLLEGE OF ENGINEERING</h1>
-              <div style="height: 2px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent); margin: 15px auto; width: 60%;"></div>
-              <h2 style="margin: 0; font-size: 24px; font-weight: 600; opacity: 0.95;">DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</h2>
-              <p style="margin: 10px 0 0 0; font-size: 18px; font-weight: 500; opacity: 0.9;">III-I CSE-B CLASS ATTENDANCE REPORT</p>
+            <div style="background: rgba(255,255,255,0.25); backdrop-filter: blur(15px); border-radius: 25px; padding: 30px; margin-bottom: 25px; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 8px 32px rgba(255,126,0,0.3);">
+              <h1 style="margin: 0; font-size: 34px; font-weight: 800; text-shadow: 0 3px 6px rgba(0,0,0,0.4); letter-spacing: 2px; background: linear-gradient(45deg, #fff, #fff8dc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🎓 NNRG COLLEGE OF ENGINEERING</h1>
+              <div style="height: 3px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent); margin: 18px auto; width: 70%; border-radius: 2px;"></div>
+              <h2 style="margin: 0; font-size: 26px; font-weight: 700; opacity: 0.95; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">DEPARTMENT OF COMPUTER SCIENCE & ENGINEERING</h2>
+              <p style="margin: 12px 0 0 0; font-size: 20px; font-weight: 600; opacity: 0.9; text-shadow: 0 1px 3px rgba(0,0,0,0.3);">III-I CSE-B CLASS ATTENDANCE REPORT</p>
             </div>
-            <div style="display: flex; justify-content: center; gap: 30px; margin-top: 20px;">
-              <div style="background: rgba(255,255,255,0.1); padding: 15px 25px; border-radius: 15px; backdrop-filter: blur(5px);">
-                <div style="font-size: 14px; opacity: 0.9;">📅 ${format(selectedDate, 'EEEE, MMMM do, yyyy')}</div>
+            <div style="display: flex; justify-content: center; gap: 35px; margin-top: 25px;">
+              <div style="background: rgba(255,255,255,0.2); padding: 18px 30px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);">
+                <div style="font-size: 16px; opacity: 0.95; font-weight: 600;">📅 ${format(selectedDate, 'EEEE, MMMM do, yyyy')}</div>
               </div>
-              <div style="background: rgba(255,255,255,0.1); padding: 15px 25px; border-radius: 15px; backdrop-filter: blur(5px);">
-                <div style="font-size: 14px; opacity: 0.9;">🕐 ${format(new Date(), 'h:mm a')}</div>
+              <div style="background: rgba(255,255,255,0.2); padding: 18px 30px; border-radius: 20px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3);">
+                <div style="font-size: 16px; opacity: 0.95; font-weight: 600;">🕐 ${format(new Date(), 'h:mm a')}</div>
               </div>
             </div>
           </div>
         </div>
         
-        <!-- Statistics Cards -->
-        <div style="display: flex; justify-content: space-between; gap: 20px; margin: 40px 0;">
-          <div style="flex: 1; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 30px 20px; border-radius: 20px; text-align: center; color: white; box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3); position: relative; overflow: hidden;">
-            <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+        <!-- Orange Lightning Statistics Cards -->
+        <div style="display: flex; justify-content: space-between; gap: 25px; margin: 45px 0; background: linear-gradient(135deg, rgba(255,126,0,0.1) 0%, rgba(255,173,0,0.1) 100%); padding: 30px; border-radius: 25px;">
+          <div style="flex: 1; background: linear-gradient(135deg, #ff8c00 0%, #ffa500 50%, #ffb84d 100%); padding: 35px 25px; border-radius: 25px; text-align: center; color: white; box-shadow: 0 15px 40px rgba(255,140,0,0.4); position: relative; overflow: hidden; border: 2px solid rgba(255,255,255,0.2);">
+            <div style="position: absolute; top: -60px; right: -60px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%; box-shadow: 0 0 60px rgba(255,255,255,0.3);"></div>
+            <div style="position: absolute; bottom: -40px; left: -40px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
             <div style="position: relative; z-index: 1;">
-              <div style="font-size: 48px; font-weight: 800; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">${presentCount}</div>
-              <div style="font-size: 16px; font-weight: 600; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px;">Present</div>
-              <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">✅ Students</div>
+              <div style="font-size: 52px; font-weight: 900; margin-bottom: 10px; text-shadow: 0 3px 6px rgba(0,0,0,0.3); filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));">${presentCount}</div>
+              <div style="font-size: 18px; font-weight: 700; opacity: 0.95; text-transform: uppercase; letter-spacing: 2px;">Present</div>
+              <div style="font-size: 14px; opacity: 0.8; margin-top: 8px;">✅ Students</div>
             </div>
           </div>
           
-          <div style="flex: 1; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); padding: 30px 20px; border-radius: 20px; text-align: center; color: white; box-shadow: 0 10px 30px rgba(250, 112, 154, 0.3); position: relative; overflow: hidden;">
-            <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+          <div style="flex: 1; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 50%, #ffad5a 100%); padding: 35px 25px; border-radius: 25px; text-align: center; color: white; box-shadow: 0 15px 40px rgba(255,107,53,0.4); position: relative; overflow: hidden; border: 2px solid rgba(255,255,255,0.2);">
+            <div style="position: absolute; top: -60px; right: -60px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%; box-shadow: 0 0 60px rgba(255,255,255,0.3);"></div>
+            <div style="position: absolute; bottom: -40px; left: -40px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
             <div style="position: relative; z-index: 1;">
-              <div style="font-size: 48px; font-weight: 800; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">${absentCount}</div>
-              <div style="font-size: 16px; font-weight: 600; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px;">Absent</div>
-              <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">❌ Students</div>
+              <div style="font-size: 52px; font-weight: 900; margin-bottom: 10px; text-shadow: 0 3px 6px rgba(0,0,0,0.3); filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));">${absentCount}</div>
+              <div style="font-size: 18px; font-weight: 700; opacity: 0.95; text-transform: uppercase; letter-spacing: 2px;">Absent</div>
+              <div style="font-size: 14px; opacity: 0.8; margin-top: 8px;">❌ Students</div>
             </div>
           </div>
           
-          <div style="flex: 1; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 30px 20px; border-radius: 20px; text-align: center; color: #2d3748; box-shadow: 0 10px 30px rgba(168, 237, 234, 0.3); position: relative; overflow: hidden;">
-            <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.2); border-radius: 50%;"></div>
+          <div style="flex: 1; background: linear-gradient(135deg, #ff9500 0%, #ffad33 50%, #ffc966 100%); padding: 35px 25px; border-radius: 25px; text-align: center; color: white; box-shadow: 0 15px 40px rgba(255,149,0,0.4); position: relative; overflow: hidden; border: 2px solid rgba(255,255,255,0.2);">
+            <div style="position: absolute; top: -60px; right: -60px; width: 120px; height: 120px; background: rgba(255,255,255,0.15); border-radius: 50%; box-shadow: 0 0 60px rgba(255,255,255,0.3);"></div>
+            <div style="position: absolute; bottom: -40px; left: -40px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
             <div style="position: relative; z-index: 1;">
-              <div style="font-size: 48px; font-weight: 800; margin-bottom: 8px; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">${students.length}</div>
-              <div style="font-size: 16px; font-weight: 600; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">Total</div>
-              <div style="font-size: 12px; opacity: 0.6; margin-top: 5px;">👥 Students</div>
+              <div style="font-size: 52px; font-weight: 900; margin-bottom: 10px; text-shadow: 0 3px 6px rgba(0,0,0,0.3); filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));">${students.length}</div>
+              <div style="font-size: 18px; font-weight: 700; opacity: 0.95; text-transform: uppercase; letter-spacing: 2px;">Total</div>
+              <div style="font-size: 14px; opacity: 0.8; margin-top: 8px;">👥 Students</div>
             </div>
           </div>
         </div>
         
-        <!-- Attendance Percentage Bar -->
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 25px; border-radius: 20px; margin: 30px 0; color: white; text-align: center;">
-          <div style="font-size: 18px; font-weight: 600; margin-bottom: 15px;">📊 ATTENDANCE RATE</div>
-          <div style="background: rgba(255,255,255,0.2); height: 20px; border-radius: 10px; overflow: hidden; margin-bottom: 15px;">
-            <div style="height: 100%; background: linear-gradient(90deg, #4facfe, #00f2fe); width: ${((presentCount / students.length) * 100).toFixed(1)}%; transition: width 0.3s ease; border-radius: 10px;"></div>
+        <!-- Orange Lightning Attendance Percentage Bar -->
+        <div style="background: linear-gradient(135deg, #ff7e00 0%, #ff9500 25%, #ffad00 50%, #ff8c00 75%, #ff7e00 100%); padding: 30px; border-radius: 25px; margin: 35px 0; color: white; text-align: center; position: relative; overflow: hidden; border: 2px solid rgba(255,255,255,0.3); box-shadow: 0 15px 40px rgba(255,126,0,0.3);">
+          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.2) 0%, transparent 70%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.15) 0%, transparent 70%);"></div>
+          <div style="position: relative; z-index: 1;">
+            <div style="font-size: 22px; font-weight: 700; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.4);">📊 ATTENDANCE RATE</div>
+            <div style="background: rgba(255,255,255,0.3); height: 25px; border-radius: 15px; overflow: hidden; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.4);">
+              <div style="height: 100%; background: linear-gradient(90deg, #fff, #ffe4b5, #ffcc80); width: ${((presentCount / students.length) * 100).toFixed(1)}%; transition: width 0.5s ease; border-radius: 15px; box-shadow: 0 0 20px rgba(255,255,255,0.6);"></div>
+            </div>
+            <div style="font-size: 38px; font-weight: 900; text-shadow: 0 3px 6px rgba(0,0,0,0.4); filter: drop-shadow(0 0 15px rgba(255,255,255,0.7));">${((presentCount / students.length) * 100).toFixed(1)}%</div>
           </div>
-          <div style="font-size: 32px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">${((presentCount / students.length) * 100).toFixed(1)}%</div>
         </div>
         
         ${absentCount > 0 ? `
-          <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); padding: 30px; border-radius: 20px; margin-top: 30px; box-shadow: 0 10px 30px rgba(255, 154, 158, 0.3);">
-            <div style="text-align: center; margin-bottom: 25px;">
-              <h3 style="color: #7c3aed; margin: 0; font-size: 24px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">📋 ABSENT STUDENTS</h3>
-              <div style="font-size: 16px; color: #8b5cf6; margin-top: 5px; font-weight: 600;">(${absentCount} ${absentCount === 1 ? 'Student' : 'Students'})</div>
-            </div>
-            <div style="background: rgba(255,255,255,0.9); padding: 25px; border-radius: 15px; border-left: 6px solid #ef4444;">
-              <div style="color: #dc2626; font-size: 20px; font-weight: 700; text-align: center; line-height: 1.6; font-family: 'Courier New', monospace;">
-                ${absentStudents.map(student => student.rollNumber).join(' • ')}
+          <div style="background: linear-gradient(135deg, rgba(255,126,0,0.9) 0%, rgba(255,149,0,0.85) 50%, rgba(255,173,0,0.9) 100%); padding: 35px; border-radius: 25px; margin-top: 35px; box-shadow: 0 15px 40px rgba(255,126,0,0.4); position: relative; overflow: hidden; border: 2px solid rgba(255,255,255,0.3);">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.2) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(255,255,255,0.15) 0%, transparent 50%);"></div>
+            <div style="position: relative; z-index: 1;">
+              <div style="text-align: center; margin-bottom: 30px;">
+                <h3 style="color: white; margin: 0; font-size: 28px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.4);">📋 ABSENT STUDENTS</h3>
+                <div style="font-size: 18px; color: rgba(255,255,255,0.9); margin-top: 8px; font-weight: 600;">(${absentCount} ${absentCount === 1 ? 'Student' : 'Students'})</div>
+              </div>
+              <div style="background: rgba(255,255,255,0.95); padding: 30px; border-radius: 20px; border-left: 8px solid #ff4500; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                <div style="color: #cc3300; font-size: 24px; font-weight: 800; text-align: center; line-height: 1.8; font-family: 'Courier New', monospace; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">
+                  ${absentStudents.map(student => student.rollNumber).join(' • ')}
+                </div>
               </div>
             </div>
           </div>
         ` : `
-          <div style="background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); padding: 40px; border-radius: 20px; margin-top: 30px; text-align: center; color: white; box-shadow: 0 10px 30px rgba(132, 250, 176, 0.3);">
-            <div style="font-size: 60px; margin-bottom: 20px;">🎉</div>
-            <h3 style="margin: 0; font-size: 28px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">PERFECT ATTENDANCE!</h3>
-            <p style="margin: 10px 0 0 0; font-size: 18px; opacity: 0.9; font-weight: 500;">All students are present today</p>
+          <div style="background: linear-gradient(135deg, rgba(255,165,0,0.9) 0%, rgba(255,185,0,0.85) 50%, rgba(255,205,0,0.9) 100%); padding: 45px; border-radius: 25px; margin-top: 35px; text-align: center; color: white; box-shadow: 0 15px 40px rgba(255,165,0,0.4); position: relative; overflow: hidden; border: 2px solid rgba(255,255,255,0.3);">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 70%);"></div>
+            <div style="position: relative; z-index: 1;">
+              <div style="font-size: 70px; margin-bottom: 25px; filter: drop-shadow(0 5px 15px rgba(255,255,255,0.5));">🎉</div>
+              <h3 style="margin: 0; font-size: 32px; font-weight: 800; text-shadow: 0 3px 6px rgba(0,0,0,0.3);">PERFECT ATTENDANCE!</h3>
+              <p style="margin: 15px 0 0 0; font-size: 20px; opacity: 0.95; font-weight: 600;">All students are present today</p>
+            </div>
           </div>
         `}
         
-         <!-- Footer -->
-        <div style="margin-top: 40px; padding-top: 25px; border-top: 2px solid #e5e7eb; text-align: center; color: #6b7280;">
-          <div style="font-size: 14px; font-weight: 600; margin-bottom: 5px;">Generated on ${format(new Date(), 'MMM dd, yyyy')} at ${format(new Date(), 'h:mm a')}</div>
-          <div style="font-size: 12px; opacity: 0.7;">NNRG College of Engineering • Department of CSE • Academic Year 2023-2027</div>
+        <!-- Orange Lightning Footer -->
+        <div style="margin-top: 45px; padding: 30px 0; border-top: 3px solid rgba(255,126,0,0.3); text-align: center; background: linear-gradient(135deg, rgba(255,126,0,0.1) 0%, rgba(255,173,0,0.1) 100%); border-radius: 15px;">
+          <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: #ff6600;">Generated on ${format(new Date(), 'MMM dd, yyyy')} at ${format(new Date(), 'h:mm a')}</div>
+          <div style="font-size: 14px; opacity: 0.8; color: #ff7e00; font-weight: 600;">NNRG College of Engineering • Department of CSE • Academic Year 2023-2027</div>
         </div>
       `;
       
