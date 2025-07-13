@@ -84,23 +84,11 @@ export default {
 					to: {
 						height: '0'
 					}
-				},
-				'shine-pulse': {
-					'0%': {
-						'background-position': '0% 0%'
-					},
-					'50%': {
-						'background-position': '100% 100%'
-					},
-					'to': {
-						'background-position': '0% 0%'
-					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out',
-				'shine-pulse': 'shine-pulse var(--shine-pulse-duration) infinite linear'
+				'accordion-up': 'accordion-up 0.2s ease-out'
 			}
 		}
 	},
