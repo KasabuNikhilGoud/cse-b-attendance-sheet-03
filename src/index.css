@@ -18,10 +18,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 5%;
 
-    /* Primary - Bold Orange theme */
-    --primary: 30 84% 60%;
+    /* Primary - Bold Red theme */
+    --primary: 0 84% 60%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 32 100% 70%;
+    --primary-glow: 0 100% 70%;
 
     /* Secondary - Elegant Black */
     --secondary: 0 0% 10%;
@@ -31,8 +31,8 @@
     --muted: 0 0% 96%;
     --muted-foreground: 0 0% 45%;
 
-    /* Accent - Vibrant Orange */
-    --accent: 28 76% 55%;
+    /* Accent - Vibrant Red */
+    --accent: 0 76% 55%;
     --accent-foreground: 0 0% 100%;
 
     /* Destructive */
@@ -42,29 +42,29 @@
     /* Borders and inputs */
     --border: 0 0% 90%;
     --input: 0 0% 96%;
-    --ring: 30 84% 60%;
+    --ring: 0 84% 60%;
 
     /* Design tokens */
     --radius: 0.75rem;
 
     /* Premium Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(30 85% 58%), hsl(32 92% 65%));
+    --gradient-primary: linear-gradient(135deg, hsl(0 85% 58%), hsl(0 92% 65%));
     --gradient-secondary: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 15%));
-    --gradient-accent: linear-gradient(135deg, hsl(28 76% 55%), hsl(35 80% 60%));
-    --gradient-hero: linear-gradient(135deg, hsl(30 84% 60%), hsl(0 0% 10%));
+    --gradient-accent: linear-gradient(135deg, hsl(0 76% 55%), hsl(15 80% 60%));
+    --gradient-hero: linear-gradient(135deg, hsl(0 84% 60%), hsl(0 0% 10%));
     --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
     --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.1), hsl(0 0% 100% / 0.05));
-    --gradient-premium: linear-gradient(135deg, hsl(0 0% 5%), hsl(30 84% 60%), hsl(0 0% 5%));
-    --gradient-mesh: radial-gradient(circle at 20% 50%, hsl(30 84% 60% / 0.1) 0%, transparent 50%), 
+    --gradient-premium: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 84% 60%), hsl(0 0% 5%));
+    --gradient-mesh: radial-gradient(circle at 20% 50%, hsl(0 84% 60% / 0.1) 0%, transparent 50%), 
                      radial-gradient(circle at 80% 20%, hsl(0 0% 5% / 0.1) 0%, transparent 50%),
-                     radial-gradient(circle at 40% 80%, hsl(28 76% 55% / 0.1) 0%, transparent 50%);
+                     radial-gradient(circle at 40% 80%, hsl(0 76% 55% / 0.1) 0%, transparent 50%);
 
     /* Premium Shadows */
-    --shadow-elegant: 0 20px 50px -10px hsl(30 84% 60% / 0.25);
-    --shadow-glow: 0 0 60px hsl(32 100% 70% / 0.35);
+    --shadow-elegant: 0 20px 50px -10px hsl(0 84% 60% / 0.25);
+    --shadow-glow: 0 0 60px hsl(0 100% 70% / 0.35);
     --shadow-card: 0 8px 30px -6px hsl(0 0% 0% / 0.12);
     --shadow-glass: 0 8px 32px hsl(0 0% 0% / 0.12), inset 0 1px 0 hsl(0 0% 100% / 0.2);
-    --shadow-premium: 0 25px 80px -20px hsl(30 84% 60% / 0.4), 0 0 0 1px hsl(0 0% 100% / 0.05);
+    --shadow-premium: 0 25px 80px -20px hsl(0 84% 60% / 0.4), 0 0 0 1px hsl(0 0% 100% / 0.05);
     --shadow-float: 0 15px 35px hsl(0 0% 0% / 0.1), 0 3px 10px hsl(0 0% 0% / 0.08);
 
     /* Animations */
@@ -273,7 +273,7 @@
     position: absolute;
     width: 4px;
     height: 4px;
-    background: hsl(30 84% 60% / 0.3);
+    background: hsl(0 84% 60% / 0.3);
     border-radius: 50%;
     animation: float 8s infinite ease-in-out;
   }
@@ -285,7 +285,7 @@
   }
 
   .dot:nth-child(3n) {
-    background: hsl(28 76% 55% / 0.25);
+    background: hsl(0 76% 55% / 0.25);
     animation-delay: -4s;
     animation-duration: 12s;
   }
@@ -354,10 +354,10 @@
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px hsl(30 84% 60% / 0.3);
+    box-shadow: 0 0 20px hsl(0 84% 60% / 0.3);
   }
   50% {
-    box-shadow: 0 0 40px hsl(30 84% 60% / 0.6);
+    box-shadow: 0 0 40px hsl(0 84% 60% / 0.6);
   }
 }
 
