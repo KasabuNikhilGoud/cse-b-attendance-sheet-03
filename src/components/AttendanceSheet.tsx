@@ -248,6 +248,33 @@ const AttendanceSheet = () => {
     }
   };
 
+  const handleSendAttendanceEmails = async () => {
+    const date = getStorageKey(selectedDate);
+    const absentRolls = students.filter(s => s.isAbsent).map(s => s.rollNumber);
+    const absentCount = absentRolls.length;
+    const presentCount = students.length - absentCount;
+    const percentage = students.length > 0 ? parseFloat(((presentCount / students.length) * 100).toFixed(1)) : 0;
+
+    const payload = {
+      date,
+      absentRolls,
+      presentCount,
+      absentCount,
+      percentage,
+    };
+
+    try {
+      await fetch('https://script.google.com/macros/s/YOUR_DEPLOYED_SCRIPT_ID/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        mode: 'no-cors',
+      });
+    } catch (error) {
+      // silent by design
+    }
+  };
+
   const absentCount = students.filter(s => s.isAbsent).length;
   const presentCount = students.length - absentCount;
 
@@ -303,6 +330,7 @@ const AttendanceSheet = () => {
                 onShowExportOptions={() => setShowExportOptions(true)}
                 onShowEmailConfig={() => setShowEmailConfig(true)}
                 onGoogleSheetsSave={handleGoogleSheetsSave}
+                onSendAttendanceEmails={handleSendAttendanceEmails}
               />
 
               {/* Search and Filter */}
