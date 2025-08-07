@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { format } from 'date-fns';
-import { Calendar, UserCheck, UserX, MessageCircle, Download, Mail, Sheet, MailCheck } from 'lucide-react';
+import { Calendar, UserCheck, UserX, MessageCircle, MailCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -14,9 +14,6 @@ interface AttendanceControlsProps {
   presentCount: number;
   absentCount: number;
   onWhatsAppSend: () => void;
-  onShowExportOptions: () => void;
-  onShowEmailConfig: () => void;
-  onGoogleSheetsSave: () => void;
   onSendAttendanceEmails: () => void;
 }
 
@@ -26,9 +23,6 @@ const AttendanceControls: React.FC<AttendanceControlsProps> = ({
   presentCount,
   absentCount,
   onWhatsAppSend,
-  onShowExportOptions,
-  onShowEmailConfig,
-  onGoogleSheetsSave,
   onSendAttendanceEmails
 }) => {
   return (
@@ -87,33 +81,6 @@ const AttendanceControls: React.FC<AttendanceControlsProps> = ({
 
       <div className="flex justify-end">
         <div className="flex flex-wrap gap-2">
-          <Button 
-            variant="outline" 
-            onClick={onShowExportOptions}
-            className="bg-green-50 border-green-200 text-green-700 hover:bg-green-100"
-          >
-            <Download className="mr-2 h-4 w-4" />
-            Share Image
-          </Button>
-
-          <Button 
-            variant="outline" 
-            onClick={onGoogleSheetsSave}
-            className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
-          >
-            <Sheet className="mr-2 h-4 w-4" />
-            Save to Sheets
-          </Button>
-
-          <Button 
-            variant="outline" 
-            onClick={onShowEmailConfig}
-            className="bg-orange-50 border-orange-200 text-orange-700 hover:bg-orange-100"
-          >
-            <Mail className="mr-2 h-4 w-4" />
-            Send Email
-          </Button>
-
           <Button 
             variant="outline"
             onClick={onSendAttendanceEmails}

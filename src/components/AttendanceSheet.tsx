@@ -7,19 +7,14 @@ import AttendanceControls from "./AttendanceControls";
 import SearchAndFilter from "./SearchAndFilter";
 import AttendanceStats from "./AttendanceStats";
 import StudentGrid from "./StudentGrid";
-import ExportOptions from "./ExportOptions";
-import EmailNotifications from "./EmailNotifications";
-import GoogleSheetsConfig from "./GoogleSheetsConfig";
 import { getStorageKey, loadAttendanceData, saveAttendanceData } from "@/utils/attendanceUtils";
 import { sendWhatsAppAttendance } from "@/utils/whatsappUtils";
-import { googleSheetsService } from "@/services/googleSheetsService";
 import { motion } from "framer-motion";
 
 export interface Student {
   rollNumber: string;
   name: string;
   isAbsent: boolean;
-  email?: string;
 }
 
 const AttendanceSheet = () => {
@@ -29,80 +24,76 @@ const AttendanceSheet = () => {
   const [allAttendanceData, setAllAttendanceData] = useState<Record<string, Student[]>>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState<"all" | "present" | "absent">("all");
-  const [showExportOptions, setShowExportOptions] = useState(false);
-  const [showEmailConfig, setShowEmailConfig] = useState(false);
-  const [showGoogleSheetsConfig, setShowGoogleSheetsConfig] = useState(false);
-
-  // Student names mapping with emails
-  const studentNames: Record<string, { name: string; email: string }> = {
-    "237Z1A0572": { name: "KANNARAPU KEERTHANA", email: "kkannarapu@gmail.com" },
-    "237Z1A0573": { name: "KARNATI PAVAN REDDY", email: "pavankarnati714@gmail.com" },
-    "237Z1A0574": { name: "KARUTURI SURYANARAYANA", email: "karuturisurya9989@gmail.com" },
-    "237Z1A0575": { name: "KASABU NIKHIL GOUD", email: "kasabunikil@gmail.com" },
-    "237Z1A0576": { name: "KALVA SRIDHAR", email: "kalvasridhar@gmail.com" },
-    "237Z1A0577": { name: "KATHI REVANTH", email: "revanthkathi9955@gmail.com" },
-    "237Z1A0578": { name: "KATRAVTH PRIYANKA", email: "katravathpriyanka07@gmail.com" },
-    "237Z1A0579": { name: "KAVATI THARUN TEJA", email: "kavati.tharunteja23@gamil.com" },
-    "237Z1A0580": { name: "KHAMMAMPATI PAVAN", email: "pavankhammampati2005@gmail.com" },
-    "237Z1A0581": { name: "KHANDAVILLI HARSHITH GHANA SHYAM", email: "harshithghanashyam@gmail.com" },
-    "237Z1A0582": { name: "KOLLI SHANMUKH SRINIVAS", email: "Crigamers7777@gmail.com" },
-    "237Z1A0583": { name: "KOMMULA GOPI CHARAN", email: "kommulagopicharan@gmail.com" },
-    "237Z1A0584": { name: "KONATHAM GNANESHWAR REDDY", email: "Konathamgnaneshwarreddy@gmail.com" },
-    "237Z1A0585": { name: "KONYALA SHANMUKHA SAI", email: "konyalashanmukh@gmail.com" },
-    "237Z1A0586": { name: "KOPPULA YAMINI", email: "yaminikoppula.123@gmail.com" },
-    "237Z1A0587": { name: "KORRA GOVIND", email: "korragovind152005@gmail.com" },
-    "237Z1A0588": { name: "KOTHAGOLLA ANJANEYULU", email: "kothagollaanjaneyulu@gmail.com" },
-    "237Z1A0589": { name: "KOVURI VEDHASRI", email: "kovurivedhasri18@gmail.com" },
-    "237Z1A0590": { name: "KUMKUMA PRAVALIKA", email: "akumarmudiraj789@gmail.com" },
-    "237Z1A0591": { name: "KUNTA SRUJANI", email: "kannichinnimunni@gmail.com" },
-    "237Z1A0592": { name: "KONTHAM RUCHITHA", email: "konthamruchitha@gmail.com" },
-    "237Z1A0593": { name: "M MEENU VAISHNAVE", email: "meenuvaishnavi.m@gmail.com" },
-    "237Z1A0594": { name: "MACHA SHIVANI", email: "Shivanimacha51@gmail.com" },
-    "237Z1A0595": { name: "MADERA SRAVAN", email: "hanishsravankp@gmail.com" },
-    "237Z1A0596": { name: "MALA YADAGIRI", email: "malayadagiri18@gmail.com" },
-    "237Z1A0597": { name: "MALLALA SRI LEKHA", email: "SRILEKHAM270@GMAIL.COM" },
-    "237Z1A0598": { name: "MANCHALA ARAVIND", email: "manchalaaravind@gmail.com" },
-    "237Z1A0599": { name: "MANCHI SHIVA SAI", email: "Manchishivasai2006@gmail.com" },
-    "237Z1A05A0": { name: "MANDA SHYAM", email: "MANDASHYAM916@GMAIL.COM" },
-    "237Z1A05A1": { name: "MANGALAPALLI SRAVANTHI", email: "mangalapallysravanthigamil.com@gamil.com" },
-    "237Z1A05A2": { name: "MANKA ROHINI", email: "rohiniyadav018@gmail.com" },
-    "237Z1A05A3": { name: "MARADUGU VENKATA SAI", email: "mvsvikas14@gmail.com" },
-    "237Z1A05A4": { name: "MARATI PRANITHA", email: "maratipranitha19@gmail.com" },
-    "237Z1A05A5": { name: "MARKA SUDHINDRA GOUD", email: "msudhindragoud@gmail.com" },
-    "237Z1A05A6": { name: "MARKA VIVEK", email: "sudarshanmarka77@gmail.com" },
-    "237Z1A05A7": { name: "MATTEPU RENUKA LAKSHMI", email: "mrenukalakshmi65@gmail.com" },
-    "237Z1A05A8": { name: "MD ASAD AHMED", email: "asadahmed2306@gmail.com" },
-    "237Z1A05A9": { name: "MEESALA RAMYA", email: "meesalaramya625@gmail.com" },
-    "237Z1A05B0": { name: "MOHAMMED ROUNAQ ALI", email: "tabrasali7@gmail.com" },
-    "237Z1A05B1": { name: "MORADEEPIKA", email: "moradeepika6@gmail.com" },
-    "237Z1A05B2": { name: "MULAGIRI SASAANK ANIRUDH", email: "anirudhsasaank@gmail.com" },
-    "237Z1A05B3": { name: "MULJE VITTHAL DEVIDAS", email: "mv3281444@gmail.com" },
-    "237Z1A05B4": { name: "MUNIGANTI SHARANYA", email: "munigantisharanya@gmail.com" },
-    "237Z1A05B5": { name: "NAGULAPALLY RAVALI", email: "ravalinagulapalli@gmail.com" },
-    "237Z1A05B6": { name: "NARAGONI SRI SIRI", email: "Srisirinaragoni@gmail.com" },
-    "237Z1A05B7": { name: "NAYKOTI PRASAD", email: "naykotiprasad@gmail.com" },
-    "237Z1A05B8": { name: "ND LOKESH", email: "nd.lokesh14@gmail.com" },
-    "237Z1A05B9": { name: "NEELAKANTAM SAKETH RAJU", email: "SAKETHRAJU1@GMAIL.COM" },
-    "237Z1A05C0": { name: "NELLUTLA UMESH CHANDRA", email: "uc544529@gmail.com" },
-    "237Z1A05C1": { name: "NISU KUMARI", email: "anandsaw2008@gmail.com" },
-    "237Z1A05C2": { name: "NOMULA KARNAKAR", email: "nomulakarnskar@gmail.com" },
-    "237Z1A05C3": { name: "NOORANI", email: "snsp6991@gmail.com" },
-    "237Z1A05C4": { name: "NUKALA VINOD KUMAR", email: "nukalavinodkumar57@gmail.com" },
-    "237Z1A05C5": { name: "O CHANDRAKIRAN", email: "chandrakiran238@gmail.com" },
-    "237Z1A05C6": { name: "PACHIPALA SARIKA", email: "Pachipala.sarika.55@gmail.com" },
-    "237Z1A05C7": { name: "PADALA SAI SHASHANK", email: "padalasaishashank@gmail.com" },
-    "237Z1A05C8": { name: "PEDDI SAI VENKAT SUMANTH", email: "peddisumanth59@gmail.com" },
-    "237Z1A05C9": { name: "PEDDI SHIVA", email: "peddishiva46@gmail.com" },
-    "237Z1A05D0": { name: "PINJALA BHARGAV", email: "p.bhargav7708@gmail.com" },
-    "237Z1A05D1": { name: "PITTALA HARI BABU", email: "haribabumudhiraj0@gmail.com" },
-    "237Z1A05D2": { name: "PODUPUGANTI GOVARDHAN", email: "pdupugantigovardhan@gmail.com" },
-    "237Z1A05D3": { name: "POGU SAI SARATH", email: "pogusaisarath@gmail.com" },
-    "237Z1A05D4": { name: "POLANA RAHUL", email: "Polanarahul@gmail.com" },
-    "237Z1A05D5": { name: "POLEPAKA MANICHARAN", email: "manicharanrocky@gmail.com" },
-    "237Z1A05D6": { name: "POOJARI MAHESH GOUD", email: "maheshgoud7354@gmail.com" },
-    "237Z1A05D7": { name: "PUTTA CHARAN NAIDU", email: "puttacharannaidu@gmail.com" },
-    "237Z1A05D8": { name: "RACHAKONDA MANASA", email: "rachakondamanasa49@gmil.com" },
-    "237Z1A05D9": { name: "RAGI MANOHAR REDDY", email: "manoharreddy7366@gmail.com" }
+  // Student names mapping (emails removed)
+  const studentNames: Record<string, { name: string }> = {
+    "237Z1A0572": { name: "KANNARAPU KEERTHANA" },
+    "237Z1A0573": { name: "KARNATI PAVAN REDDY" },
+    "237Z1A0574": { name: "KARUTURI SURYANARAYANA" },
+    "237Z1A0575": { name: "KASABU NIKHIL GOUD" },
+    "237Z1A0576": { name: "KALVA SRIDHAR" },
+    "237Z1A0577": { name: "KATHI REVANTH" },
+    "237Z1A0578": { name: "KATRAVTH PRIYANKA" },
+    "237Z1A0579": { name: "KAVATI THARUN TEJA" },
+    "237Z1A0580": { name: "KHAMMAMPATI PAVAN" },
+    "237Z1A0581": { name: "KHANDAVILLI HARSHITH GHANA SHYAM" },
+    "237Z1A0582": { name: "KOLLI SHANMUKH SRINIVAS" },
+    "237Z1A0583": { name: "KOMMULA GOPI CHARAN" },
+    "237Z1A0584": { name: "KONATHAM GNANESHWAR REDDY" },
+    "237Z1A0585": { name: "KONYALA SHANMUKHA SAI" },
+    "237Z1A0586": { name: "KOPPULA YAMINI" },
+    "237Z1A0587": { name: "KORRA GOVIND" },
+    "237Z1A0588": { name: "KOTHAGOLLA ANJANEYULU" },
+    "237Z1A0589": { name: "KOVURI VEDHASRI" },
+    "237Z1A0590": { name: "KUMKUMA PRAVALIKA" },
+    "237Z1A0591": { name: "KUNTA SRUJANI" },
+    "237Z1A0592": { name: "KONTHAM RUCHITHA" },
+    "237Z1A0593": { name: "M MEENU VAISHNAVE" },
+    "237Z1A0594": { name: "MACHA SHIVANI" },
+    "237Z1A0595": { name: "MADERA SRAVAN" },
+    "237Z1A0596": { name: "MALA YADAGIRI" },
+    "237Z1A0597": { name: "MALLALA SRI LEKHA" },
+    "237Z1A0598": { name: "MANCHALA ARAVIND" },
+    "237Z1A0599": { name: "MANCHI SHIVA SAI" },
+    "237Z1A05A0": { name: "MANDA SHYAM" },
+    "237Z1A05A1": { name: "MANGALAPALLI SRAVANTHI" },
+    "237Z1A05A2": { name: "MANKA ROHINI" },
+    "237Z1A05A3": { name: "MARADUGU VENKATA SAI" },
+    "237Z1A05A4": { name: "MARATI PRANITHA" },
+    "237Z1A05A5": { name: "MARKA SUDHINDRA GOUD" },
+    "237Z1A05A6": { name: "MARKA VIVEK" },
+    "237Z1A05A7": { name: "MATTEPU RENUKA LAKSHMI" },
+    "237Z1A05A8": { name: "MD ASAD AHMED" },
+    "237Z1A05A9": { name: "MEESALA RAMYA" },
+    "237Z1A05B0": { name: "MOHAMMED ROUNAQ ALI" },
+    "237Z1A05B1": { name: "MORADEEPIKA" },
+    "237Z1A05B2": { name: "MULAGIRI SASAANK ANIRUDH" },
+    "237Z1A05B3": { name: "MULJE VITTHAL DEVIDAS" },
+    "237Z1A05B4": { name: "MUNIGANTI SHARANYA" },
+    "237Z1A05B5": { name: "NAGULAPALLY RAVALI" },
+    "237Z1A05B6": { name: "NARAGONI SRI SIRI" },
+    "237Z1A05B7": { name: "NAYKOTI PRASAD" },
+    "237Z1A05B8": { name: "ND LOKESH" },
+    "237Z1A05B9": { name: "NEELAKANTAM SAKETH RAJU" },
+    "237Z1A05C0": { name: "NELLUTLA UMESH CHANDRA" },
+    "237Z1A05C1": { name: "NISU KUMARI" },
+    "237Z1A05C2": { name: "NOMULA KARNAKAR" },
+    "237Z1A05C3": { name: "NOORANI" },
+    "237Z1A05C4": { name: "NUKALA VINOD KUMAR" },
+    "237Z1A05C5": { name: "O CHANDRAKIRAN" },
+    "237Z1A05C6": { name: "PACHIPALA SARIKA" },
+    "237Z1A05C7": { name: "PADALA SAI SHASHANK" },
+    "237Z1A05C8": { name: "PEDDI SAI VENKAT SUMANTH" },
+    "237Z1A05C9": { name: "PEDDI SHIVA" },
+    "237Z1A05D0": { name: "PINJALA BHARGAV" },
+    "237Z1A05D1": { name: "PITTALA HARI BABU" },
+    "237Z1A05D2": { name: "PODUPUGANTI GOVARDHAN" },
+    "237Z1A05D3": { name: "POGU SAI SARATH" },
+    "237Z1A05D4": { name: "POLANA RAHUL" },
+    "237Z1A05D5": { name: "POLEPAKA MANICHARAN" },
+    "237Z1A05D6": { name: "POOJARI MAHESH GOUD" },
+    "237Z1A05D7": { name: "PUTTA CHARAN NAIDU" },
+    "237Z1A05D8": { name: "RACHAKONDA MANASA" },
+    "237Z1A05D9": { name: "RAGI MANOHAR REDDY" }
   };
 
   // Generate roll numbers excluding 571, 80, 88, A0 but including B0, C0, D0
@@ -139,7 +130,6 @@ const AttendanceSheet = () => {
     const initialStudents: Student[] = rollNumbers.map((rollNumber) => ({
       rollNumber,
       name: studentNames[rollNumber]?.name || `Student ${rollNumber.slice(-2)}`,
-      email: studentNames[rollNumber]?.email || `${rollNumber.toLowerCase()}@example.com`,
       isAbsent: false,
     }));
     
@@ -213,40 +203,6 @@ const AttendanceSheet = () => {
     }
   };
 
-  const handleGoogleSheetsSave = async () => {
-    const dateKey = getStorageKey(selectedDate);
-    const updatedData = { ...allAttendanceData, [dateKey]: students };
-    
-    setAllAttendanceData(updatedData);
-    saveAttendanceData(updatedData);
-    
-    try {
-      // Check if Google Sheets is configured
-      if (!googleSheetsService.hasCredentials()) {
-        toast({
-          title: "Configuration Required",
-          description: "Please configure Google Sheets credentials first.",
-          variant: "destructive"
-        });
-        setShowGoogleSheetsConfig(true);
-        return;
-      }
-      
-      await googleSheetsService.saveAttendanceToSheet(students, selectedDate, updatedData);
-      
-      toast({
-        title: "Data Prepared for Google Sheets",
-        description: "Check console for formatted data to copy-paste into your sheet.",
-      });
-    } catch (error) {
-      console.error('Error saving to Google Sheets:', error);
-      toast({
-        title: "Error",
-        description: `Failed to prepare Google Sheets data: ${error.message}`,
-        variant: "destructive"
-      });
-    }
-  };
 
   const handleSendAttendanceEmails = async () => {
     const date = getStorageKey(selectedDate);
@@ -270,8 +226,16 @@ const AttendanceSheet = () => {
         body: JSON.stringify(payload),
         mode: 'no-cors',
       });
+      toast({
+        title: "Request sent",
+        description: "Attendance email request sent successfully.",
+      });
     } catch (error) {
-      // silent by design
+      toast({
+        title: "Failed to send",
+        description: "Network error while sending. Try again.",
+        variant: "destructive"
+      });
     }
   };
 
@@ -280,35 +244,6 @@ const AttendanceSheet = () => {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6" data-export-content>
-      {/* Export Options Dialog */}
-      <Dialog open={showExportOptions} onOpenChange={setShowExportOptions}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Export Attendance Data</DialogTitle>
-          </DialogHeader>
-          <ExportOptions students={students} selectedDate={selectedDate} allAttendanceData={allAttendanceData} />
-        </DialogContent>
-      </Dialog>
-
-      {/* Email Configuration Dialog */}
-      <Dialog open={showEmailConfig} onOpenChange={setShowEmailConfig}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>Email Notification Settings</DialogTitle>
-          </DialogHeader>
-          <EmailNotifications students={students} selectedDate={selectedDate} />
-        </DialogContent>
-      </Dialog>
-
-      {/* Google Sheets Configuration Dialog */}
-      <Dialog open={showGoogleSheetsConfig} onOpenChange={setShowGoogleSheetsConfig}>
-        <DialogContent className="max-w-4xl">
-          <DialogHeader>
-            <DialogTitle>Google Sheets Configuration</DialogTitle>
-          </DialogHeader>
-          <GoogleSheetsConfig onConfigured={() => setShowGoogleSheetsConfig(false)} />
-        </DialogContent>
-      </Dialog>
 
       {/* Main Content */}
       <motion.div
@@ -327,9 +262,6 @@ const AttendanceSheet = () => {
                 presentCount={presentCount}
                 absentCount={absentCount}
                 onWhatsAppSend={handleWhatsAppSend}
-                onShowExportOptions={() => setShowExportOptions(true)}
-                onShowEmailConfig={() => setShowEmailConfig(true)}
-                onGoogleSheetsSave={handleGoogleSheetsSave}
                 onSendAttendanceEmails={handleSendAttendanceEmails}
               />
 
